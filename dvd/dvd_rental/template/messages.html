@@ -1,0 +1,39 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error' %}
+    <div>
+    <script>M.toast({
+          html: "{{message}}", classes: 'red rounded', displayLength:5000});
+
+
+    </script>
+    </div>
+{% elif message.tags == 'success' %}
+    <div>
+    <script>M.toast({
+          html: "{{message}}", classes: 'green rounded', displayLength:5000});
+
+
+    </script>
+    </div>
+{% elif message.tags == 'info' %}
+    <div>
+    <script>M.toast({
+          html: "{{message}}", classes: 'blue rounded', displayLength:5000});
+
+
+    </script>
+    </div>
+{% elif message.tags == 'warning' %}
+    <div>
+    <script>M.toast({
+          html: "{{message}}", classes: 'blue rounded', displayLength:5000});
+
+
+    </script>
+    </div>
+{% endif %}
+{% endfor %}
+{% endif %}
