@@ -3,6 +3,6 @@ full description will be updated soon
 
 ### Todo
 - [ ] change other .html files (movies.html, rate.html etc)
-- [ ] make categories search
-- [ ] count movies in categories
-- [ ] make fancy looking movie rating
+- [x] make categories search
+- [x] count movies in categories
+- [ ] (almost done) make fancy looking movie rating
