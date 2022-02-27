@@ -59,7 +59,7 @@ ROOT_URLCONF = 'dvd.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r'C:\Users\party\PycharmProjects\Dvd_Rental_Website\dvd\dvd_rental\template'],
+        'DIRS': [r'C:\Users\party\PycharmProjects\Movie_and_Series_Rental\dvd\dvd_rental\template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

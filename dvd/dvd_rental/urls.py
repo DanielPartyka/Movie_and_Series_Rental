@@ -14,4 +14,5 @@ urlpatterns = [
     path('add_to_cart/<slug>/',views.rent_movie,name="rent_movie"),
     path('movies_rate/<slug>',views.rate_movie,name="rate_movie"),
     path('user_rent_movies/',views.list_of_movies,name="movies_rent_by_user"),
+    path('categories/', views.categories_search, name="categories_search")
 ]

@@ -136,10 +136,40 @@ def rent_movie(request, slug):
 
 @login_required()
 def list_of_movies(request):
-    rmb = Rent_Movie_Base.objects.filter(user_id=request.user)[0]
-    rs = Rent_Status.objects.filter(rent_movie = rmb)
-    return render(request, 'user_rent_movies.html', {
+    try:
+        rmb = Rent_Movie_Base.objects.filter(user_id=request.user)[0]
+        rs = Rent_Status.objects.filter(rent_movie=rmb)
+    except:
+        return render(request, 'user_rent_movies.html', {
+            'rs': ''
+        })
+    else:
+        return render(request, 'user_rent_movies.html', {
         'rs': rs
     })
+
+def categories_search(request):
+    try:
+        cat = Categories.objects.all()
+        mov = Movie.objects.all()
+        amount_of_movies = []
+        counter = 0
+        for x in cat:
+            for m in mov:
+                if str(x.category_name) == str(m.categories):
+                    counter += 1
+
+            amount_of_movies.append(counter)
+            counter = 0
+
+    except:
+        return render(request, 'categories.html', {
+            'rs': cat
+        })
+    else:
+        return render(request, 'categories.html', {
+            'rs': cat,
+            'am' : amount_of_movies
+        })
 
 
