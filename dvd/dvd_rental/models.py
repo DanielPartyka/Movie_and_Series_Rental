@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from autoslug import AutoSlugField
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from django.contrib.auth import get_user_model
 
 class Categories(models.Model):
     category_id = models.AutoField(primary_key=True)
@@ -23,7 +23,7 @@ class Movie(models.Model):
     price = models.CharField(max_length=130)
     movie_length = models.CharField(max_length=130, default="2h 20min")
     categories = models.ForeignKey(Categories,on_delete=models.CASCADE)
-    numer_of_copies = models.IntegerField(validators=[MinValueValidator(1)], blank=False, default=1)
+    numer_of_copies = models.IntegerField(validators=[MinValueValidator(0)], blank=False, default=1)
 
     def __str__(self):
         return self.name
@@ -45,7 +45,7 @@ class Movie(models.Model):
         else :
             for rvw in rating_movies:
                 sum += rvw.rate
-            return sum/count
+            return float(sum/count)
 
 
     def rating_count(self):

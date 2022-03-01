@@ -91,30 +91,33 @@ def logout_request(request):
 
 
 def movie_list(request, slug):
-    if slug == "all":
-        movies_list = Movie.objects.all()
-    elif slug == "search":
-        query = request.GET.get('movie_search')
-        if query == None or query == "":
-            movies_list = Movie.objects.all()
-        else:
-            movies_list = Movie.objects.filter(name__icontains=query)
-            categories = Categories.objects.all()
-            return render(request, 'movies.html', {
-                'mov': movies_list,
-                'cat': categories})
+    if request.user.id != None:
+        pass
     else:
-        category_obj = Categories.objects.filter(slug=slug)
-        category_id = Categories.objects.get(category_name = category_obj[0])
-        movies_list = Movie.objects.filter(categories=category_id)
+        if slug == "all":
+            movies_list = Movie.objects.all()
+        elif slug == "search":
+            query = request.GET.get('movie_search')
+            if query == None or query == "":
+                movies_list = Movie.objects.all()
+            else:
+                movies_list = Movie.objects.filter(name__icontains=query)
+                categories = Categories.objects.all()
+                return render(request, 'movies.html', {
+                    'mov': movies_list,
+                    'cat': categories})
+        else:
+            category_obj = Categories.objects.filter(slug=slug)
+            category_id = Categories.objects.get(category_name = category_obj[0])
+            movies_list = Movie.objects.filter(categories=category_id)
 
-    categories = Categories.objects.all()
-    paginator = Paginator(movies_list, 3)
-    page = request.GET.get('page')
-    movies_list = paginator.get_page(page)
-    return render(request, 'movies.html', {
-        'mov': movies_list,
-        'cat': categories})
+        categories = Categories.objects.all()
+        paginator = Paginator(movies_list, 3)
+        page = request.GET.get('page')
+        movies_list = paginator.get_page(page)
+        return render(request, 'movies.html', {
+            'mov': movies_list,
+            'cat': categories})
 
 def all_movies(request):
     all_movies_list = Movie.objects.all()
@@ -126,6 +129,12 @@ def all_movies(request):
 
 @login_required()
 def rate_movie(request, slug):
+    return render(request, "rate_movie.html", {
+        'slug' : slug
+    })
+
+@login_required()
+def rate_movie_post(request, slug):
     if request.method == "POST":
         form = Rate(request.POST)
         if form.is_valid():
@@ -168,15 +177,22 @@ def rent_movie(request, slug):
 @login_required()
 def list_of_movies(request):
     try:
-        rmb = Rent_Movie_Base.objects.filter(user_id=request.user)[0]
-        rs = Rent_Status.objects.filter(rent_movie=rmb)
+        rmb = Rent_Movie_Base.objects.filter(user_id=request.user)
+        list_of_rent_movies = []
+        slugs = []
+        for a in range(0, len(rmb)):
+            rent_movie_base_filter = Rent_Movie_Base.objects.filter(user_id=request.user)[a]
+            get_movie_object = Movie.objects.get(name=rent_movie_base_filter)
+            slugs.append(get_movie_object.slug)
+            list_of_rent_movies.append(Rent_Status.objects.filter(rent_movie=rmb[a]))
     except:
         return render(request, 'user_rent_movies.html', {
             'rs': ''
         })
     else:
         return render(request, 'user_rent_movies.html', {
-        'rs': rs
+        'rs': list_of_rent_movies,
+        'slugs' : slugs
     })
 
 def categories_search(request):

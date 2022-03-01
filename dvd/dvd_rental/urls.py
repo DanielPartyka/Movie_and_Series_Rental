@@ -12,7 +12,8 @@ urlpatterns = [
     path('movies/<slug>', views.movie_list, name='movie_list'),
     path('movies_detail/<slug>/',views.movie_detail,name="movie_detail"),
     path('add_to_cart/<slug>/',views.rent_movie,name="rent_movie"),
-    path('movies_rate/<slug>',views.rate_movie,name="rate_movie"),
     path('user_rent_movies/',views.list_of_movies,name="movies_rent_by_user"),
+    path('user_rent_movies/rate_movie/<slug>/',views.rate_movie,name="rate_movie"),
+    path('user_rent_movies/rate_movie/<slug>/rate/',views.rate_movie_post,name="rate_movie_post"),
     path('categories/', views.categories_search, name="categories_search")
 ]

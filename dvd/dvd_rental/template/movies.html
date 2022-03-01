@@ -29,6 +29,7 @@
 
 
         {% for movies in mov %}
+        {% if movies.numer_of_copies > 0 %}
         <div class="col-sm-4">
             <div class="card" style="width:350px;">
                 <img src="{{movies.src}}" class="card-img-top img-fluid"
@@ -37,7 +38,11 @@
                     <h4 class="card-title">{{movies.name}}</h4>
                     <p class="card-text">Długość: {{movies.movie_length}}</p>
                     <p class="card-text">Liczba kopii: {{movies.numer_of_copies}}</p>
-                    <h6>Oceny użytkowników portalu DVDRENTAL: {{movies.get_avg_rating}}/10,0
+                    {% if movies.get_avg_rating == 0 %}
+                    <h6>No one rated this movie yet
+                    </h6>
+                    {% else %}
+                    <h6>Oceny użytkowników portalu DVDRENTAL: {{movies.get_avg_rating}}/5.0
                         ({{ movies.rating_count }}
                         {% if movies.rating_count == 1 %}
                         głosujący)
@@ -45,10 +50,11 @@
                         głosujących)
                         {% endif %}
                     </h6>
+                    {% endif %}
                     <p class="card-text">Dodano: {{movies.pub_date}}</p>
                     <a href="/movies_detail/{{movies.slug}}" class="btn btn-primary float-left">Details</a>
                     {% if movies.check_movie_renting %}
-                    <a class="btn btn-primary float-right"
+                    <a class="btn btn-success float-right"
                        data-mdb-toggle="modal" data-mdb-target="#exampleModal">Reserve</a>
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
@@ -64,7 +70,7 @@
                                     <img src="{{movies.src}}" class="card-img-top img-fluid" style="height: 500px;">
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="/add_to_cart/{{movies.slug}}" class="btn btn-primary">Reserve</a>
+                                    <a href="/add_to_cart/{{movies.slug}}" class="btn btn-success">Reserve</a>
                                     <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Cancel
                                     </button>
                                 </div>
@@ -79,6 +85,42 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="col-sm-4">
+            <div class="card" style="width:350px;">
+                <img src="{{movies.src}}" class="card-img-top img-fluid"
+                     alt="Card image" style="width:auto; height:350px;">
+                <div class="card-body">
+                    <h4 class="card-title">{{movies.name}}</h4>
+                    <p class="card-text">Długość: {{movies.movie_length}}</p>
+                    <p class="card-text">Liczba kopii: {{movies.numer_of_copies}}</p>
+                    {% if movies.get_avg_rating == 0 %}
+                    <h6>No one rated this movie yet
+                    </h6>
+                    {% else %}
+                    <h6>Oceny użytkowników portalu DVDRENTAL: {{movies.get_avg_rating}}/5.0
+                        ({{ movies.rating_count }}
+                        {% if movies.rating_count == 1 %}
+                        głosujący)
+                        {% else %}
+                        głosujących)
+                        {% endif %}
+                    </h6>
+                    {% endif %}
+                    <p class="card-text">Dodano: {{movies.pub_date}}</p>
+                    <a href="/movies_detail/{{movies.slug}}" class="btn btn-primary float-left">Details</a>
+                    {% if movies.check_movie_renting %}
+                    <a class="btn btn-primary float-right"
+                       data-mdb-toggle="modal" data-mdb-target="#exampleModal1">Reserve</a>
+                    {% else %}
+                    <a type="button" class="btn btn-danger float-right" disabled>sold out
+                    </a>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
         {% empty %}
         <div class="empty">
             <div class="container">
