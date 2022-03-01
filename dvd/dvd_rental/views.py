@@ -6,16 +6,43 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 
+import copy
 from .forms import NewUserForm, Rate
 from .models import Movie, Categories, Rating, Rent_Movie_Base, Rent_Status
 
 
 def index(request):
-    obj = Movie.objects.filter().order_by('-pub_date')[0:2]
+    obj = Movie.objects.filter().order_by('-pub_date')[:2]
+    mov = Movie.objects.all()
     categories = Categories.objects.all()
+    movies_name = []
+    amount_of_movies = []
+
+    counter = 0
+    for x in categories:
+        for m in mov:
+            if x.category_name not in movies_name:
+                movies_name.append(str(x.category_name))
+            if str(x.category_name) == str(m.categories):
+                counter += 1
+
+        amount_of_movies.append(counter)
+        counter = 0
+
+    movies_dict = dict(zip(movies_name, amount_of_movies))
+    movies_dict = (dict(sorted(movies_dict.items(), key=lambda x: x[1])))
+    it = 0
+    new_dict = copy.copy(movies_dict)
+    ld = len(movies_dict)
+    for x in new_dict:
+        if it < (ld-5):
+            movies_dict.pop(x)
+        it += 1
+    l = list(movies_dict.keys())
+    l.reverse()
     return render(request, 'index.html', context={
         'movie': obj,
-        'cat': categories
+        'cat': l
     })
 
 
@@ -24,6 +51,7 @@ def reg(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
+            messages.success(request, f"Utworzono konto o nazwie: {user.username}")
             return redirect('login_request')
         else:
             for msg in form.error_messages:
@@ -90,8 +118,11 @@ def movie_list(request, slug):
 
 def all_movies(request):
     all_movies_list = Movie.objects.all()
+    paginator = Paginator(all_movies_list, 3)
+    page = request.GET.get('page')
+    movies_list = paginator.get_page(page)
     return render(request, 'all_movies.html', {
-        'mov': all_movies_list })
+        'mov': movies_list })
 
 @login_required()
 def rate_movie(request, slug):

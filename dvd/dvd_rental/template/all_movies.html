@@ -1,175 +1,125 @@
-<!DOCTYPE html>
-<html lang="utf-8">
+{% include "navigator.html" %}
 
-<head>
-    <title></title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <style>
-        .fakeimg {
-            height: 200px;
-            background: #aaa;
-        }
-        .jumbotron {
-            background-image: url("https://img.eskimotv.net/img/2019/12/StarWarsTROS.jpg");
-            background-size: cover;
-            color: white;
-        }
-        .footer {
-            display: block;
-        }
-        .navbar {
-            font-size: 25px;
-            min-height: 100px;
-        }
-        a {
-            text-decoration: none;
-        }
-
-    </style>
-</head>
-
-<body>
-
-<div class="cont">
-    <div class="jumbotron text-center" style="margin-bottom:0">
-        <h1>DVD Rental</h1>
-        <p>Największa wypożyczalnia filmów online</p>
-    </div>
-
-
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-            <ul class="navbar-nav mr-auto">
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/user_rent_movies">Wypozyczone filmy</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/movies/all">Filmy</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-        <div class="mx-auto order-0">
-            <a class="navbar-brand mx-auto" href="/">DVD Rental</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul class="navbar-nav ml-auto">
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <p style="color:white;">Zalogowano jako {{ user.username }} </p>
-                </li>
-                <li class="nav-item">
-                    <p style="color:white"><a href="/logout"> Wyloguj się</a></p></a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                <a href="/login">login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/register">Rejestracja</a>
-                </li>
-                {% endif %}
-
-            </ul>
-        </div>
-    </nav>
-
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb justify-content-center" style="font-size: 23px;">
-            {% for c in cat %}
-            <li class="breadcrumb-item"><a href="/movies/{{c.category_id}}" style="text-decoration:none;">{{c.category_name}}</a></li>
-            {% endfor %}
-        </ol>
-    </nav>
-    <div class="container" style="margin-bottom: 50px;">
-        <form action="/movies/search" method="GET">
-
-            <input class="form-control" name="movie_search" value="{{request.GET.movie_search}}" type="text"
-                   placeholder="Szukaj filmu" aria-label="Search">
-            <button class="btn btn-success float-right" type="submit">Szukaj</button>
-
-        </form>
-    </div>
-    <div class="container" style="margin-t">
+<div class="row">
+    <ol class="breadcrumb justify-content-center" style="font-size: 23px; color:black;">
+        {% for c in cat %}
+        <li class="breadcrumb-item"><a href="/movies/{{c.category_name}}" style="color: white;">{{c.category_name}}</a>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+<div class="container" style="margin-bottom: 15px; ">
+    <form action="/movies/search" method="GET" style="margin-top: -10px;">
 
         <div class="row">
+            <div class="col-11">
+                <input class="form-control" name="movie_search" value="{{request.GET.movie_search}}" type="text"
+                       placeholder="Szukaj filmu" aria-label="Search">
+            </div>
+            <div class="col-1">
+                <button class="btn btn-success float-right" type="submit">Szukaj</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div class="container" style="margin-t;">
+
+    <div class="row">
 
 
-            {% for movies in mov %}
-            <div class="col-sm-4">
-                <div class="card" style="width:350px;">
-                    <img src="{{movies.src}}" class="card-img-top img-fluid"
-                         alt="Card image" style="width:auto; height:350px;">
-                    <div class="card-body">
-                        <h4 class="card-title">{{movies.name}}</h4>
-                        <p class="card-text">{{movies.description}}</p>
-                        <p class="card-text">Długość: {{movies.movie_length}}</p>
-                        <h6>Oceny użytkowników portalu DVDRENTAL: {{movies.get_avg_rating}}/10,0 ({{movies.rating_count}}
-                            {% if movies.rating_count == 1 %}
-                            głosujący)
-                            {% else %}
-                            głosujących)
-                            {% endif %}
-                        </h6>
-                        <p class="card-text">Dodano: {{movies.pub_date}}</p>
-                        <a href="/movies_detail/{{movies.slug}}" class="btn btn-primary float-left">Dodaj Ocene</a>
-                        {% if movies.check_movie_renting %}
-                        <a href="/add_to_cart/{{movies.slug}}" class="btn btn-primary float-right">Zarezerwuj</a>
+        {% for movies in mov %}
+        <div class="col-sm-4">
+            <div class="card" style="width:350px;">
+                <img src="{{movies.src}}" class="card-img-top img-fluid"
+                     alt="Card image" style="width:auto; height:350px;">
+                <div class="card-body">
+                    <h4 class="card-title">{{movies.name}}</h4>
+                    <p class="card-text">Długość: {{movies.movie_length}}</p>
+                    <p class="card-text">Liczba kopii: {{movies.numer_of_copies}}</p>
+                    <h6>Oceny użytkowników portalu DVDRENTAL: {{movies.get_avg_rating}}/10,0
+                        ({{ movies.rating_count }}
+                        {% if movies.rating_count == 1 %}
+                        głosujący)
                         {% else %}
-                        <a class="btn btn-warning float-right">Zarezerwowane</a>
+                        głosujących)
                         {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="empty">
-                <div class="container">
-                    <div>
-                    <h1>Brak filmow</h1>
+                    </h6>
+                    <p class="card-text">Dodano: {{movies.pub_date}}</p>
+                    <a href="/movies_detail/{{movies.slug}}" class="btn btn-primary float-left">Dodaj Ocene</a>
+                    {% if movies.check_movie_renting %}
+                    <a class="btn btn-primary float-right"
+                       data-mdb-toggle="modal" data-mdb-target="#exampleModal">Zarezerwuj</a>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Rezerwacja filmu:
+                                        {{movies.name}}?</h5>
+                                    <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="{{movies.src}}" class="card-img-top img-fluid" style="height: 500px;">
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="/add_to_cart/{{movies.slug}}" class="btn btn-primary">Rezerwuj</a>
+                                    <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Anuluj
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    {% else %}
+                    <a type="button" class="btn btn-warning float-right" disabled>Zarezerwowane
+                    </a>
+
+                    {% endif %}
                 </div>
             </div>
-            {% endfor %}
         </div>
-        {% if mov.has_other_pages %}
-        <ul class="pagination justify-content-center" style="margin-top: 30px;">{% if mov.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page={{ mov.previous_page_number }}">&laquo;</a></li>
-            {% else %}
-            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-            {% endif %}
-            {% for i in mov.paginator.page_range %}
-            {% if mov.number == i %}
-            <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
-            </li>
-            {% else %}
-            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-            {% endif %}
-            {% endfor %}
-            {% if mov.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ mov.next_page_number }}">&raquo;</a></li>
-            {% else %}
-            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-            {% endif %}
-        </ul>
-
-        {% endif %}
-
+        {% empty %}
+        <div class="empty">
+            <div class="container">
+                <div>
+                    <h1>Brak filmow</h1>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-    <footer id="sticky-footer" class="py-4 bg-dark text-white-50" style="margin-top: 50px;">
-        <div class="container text-center">
-            <small>Copyright &copy; Daniel Partyka</small>
-        </div>
-    </footer>
+    <div class="row">
+    </div>
+    {% if mov.has_other_pages %}
+    <ul class="pagination justify-content-center" style="margin-top: 30px;" >{% if mov.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ mov.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+        {% endif %}
+        {% for i in mov.paginator.page_range %}
+        {% if mov.number == i %}
+        <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+        </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}" style="background-color: white;">{{ i }} </a></li>
+        {% endif %}
+        {% endfor %}
+        {% if mov.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ mov.next_page_number }}" style="background-color: white;">&raquo;</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link" style="background-color: white;">&raquo;</span></li>
+        {% endif %}
+    </ul>
+
+    {% endif %}
+
+</div>
+<footer id="sticky-footer" class="py-4 bg-dark text-white-50" style="margin-top: 50px;">
+    <div class="container text-center">
+        <small>Copyright &copy; Daniel Partyka</small>
+    </div>
+</footer>
 </div>
 
 </body>
