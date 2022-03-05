@@ -4,24 +4,43 @@ from django.conf import settings
 from django.db import models
 from autoslug import AutoSlugField
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.contrib.auth import get_user_model
+
+class Name(models.CharField):
+    def __init__(self, *args, **kwargs):
+        super(Name, self).__init__(*args, **kwargs)
+
+    def get_prep_value(self, value):
+        return str(value).lower()
 
 class Categories(models.Model):
     category_id = models.AutoField(primary_key=True)
-    category_name = models.CharField(max_length=130,blank=False)
+    category_name = Name(max_length=130,blank=False)
     slug = AutoSlugField(populate_from='category_name')
 
     def __str__(self):
         return self.category_name
 
 class Movie(models.Model):
+    class Movie_or_Series(Enum):
+        mov = ('Movie', 'Movie')
+        ser = ('Series', 'Series')
+
+        @classmethod
+        def get_value(cls, member):
+            return cls[member].value[0]
+
     name = models.CharField(max_length=130)
     slug = AutoSlugField(populate_from='name')
     src = models.CharField(max_length=130)
     pub_date = models.DateField(auto_now_add=True)
-    description = models.CharField(max_length=130)
+    description = models.CharField(max_length=250)
     price = models.CharField(max_length=130)
-    movie_length = models.CharField(max_length=130, default="2h 20min")
+    type = models.CharField(blank=False, choices=[x.value for x in Movie_or_Series], max_length=30)
+    movie_length = models.CharField(max_length=130, blank=True, null=True)
+    number_of_seasons = models.IntegerField(null=True, blank=True)
+    episodes_per_season = models.CharField(max_length=130, blank=True, help_text='Please use this format: number_of_eps_'
+                                                                                 'in_season_x, number_of_eps_'
+                                                                                 'in_season_x+1, etc')
     categories = models.ForeignKey(Categories,on_delete=models.CASCADE)
     numer_of_copies = models.IntegerField(validators=[MinValueValidator(0)], blank=False, default=1)
 

@@ -14,7 +14,7 @@ class NewUserForm(UserCreationForm):
             'class': 'form-control',
             'size': '50',
             'type':'password',
-            'min' : '8',
+            'minlength' : '8',
         }
     ))
     password2 = forms.CharField(label="Powtórz Hasło",widget=forms.TextInput(
@@ -22,7 +22,7 @@ class NewUserForm(UserCreationForm):
             'class': 'form-control',
             'size': '50',
             'type':'password',
-            'min' : '8',
+            'minlength' : '8',
         }
     ))
     email = forms.EmailField(label="Email", widget=forms.TextInput(
@@ -43,7 +43,6 @@ class NewUserForm(UserCreationForm):
         if commit:
             user.save()
         return user
-
 
 class MovieSearch(forms.Form):
     movie_search = forms.CharField(label="Szukaj filmu",max_length=130)

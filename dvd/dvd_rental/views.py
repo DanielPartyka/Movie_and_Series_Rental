@@ -49,13 +49,17 @@ def index(request):
 def reg(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
+        pass1 = form['password1'].value()
+        pass2 = form['password2'].value()
         if form.is_valid():
             user = form.save()
-            messages.success(request, f"Utworzono konto o nazwie: {user.username}")
+            messages.success(request, f"Created account: {user.username}")
             return redirect('login_request')
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{form.error_messages[msg]}")
+            if pass1 == pass2:
+                messages.error(request, "This user already exists!")
+            else:
+                messages.error(request, "Passwords dont match!")
 
     form = NewUserForm
     return render(request, 'register.html', context={"form": form})
@@ -91,8 +95,49 @@ def logout_request(request):
 
 
 def movie_list(request, slug):
-    if request.user.id != None:
-        pass
+    current_user = request.user
+    # check which movies are rented by current user
+    def check_movies_rented_by_user():
+        for m in movies_list:
+            rent_movie_list = Rent_Movie_Base.objects.filter(movie_slug=m, user_id=current_user.id)
+            if rent_movie_list.exists():
+                rented_movies_binary.append(1)
+            else:
+                rented_movies_binary.append(0)
+
+    if current_user != None:
+        current_user = request.user
+        rented_movies_binary = []
+        if slug == "all":
+            movies_list = Movie.objects.all()
+            check_movies_rented_by_user()
+        elif slug == "search":
+            query = request.GET.get('movie_search')
+            if query == None or query == "":
+                movies_list = Movie.objects.all()
+                check_movies_rented_by_user()
+            else:
+                movies_list = Movie.objects.filter(name__icontains=query)
+                check_movies_rented_by_user()
+                categories = Categories.objects.all()
+                return render(request, 'movies.html', {
+                    'mov': movies_list,
+                    'cat': categories})
+        else:
+            category_obj = Categories.objects.filter(slug=slug)
+            category_id = Categories.objects.get(category_name=category_obj[0])
+            movies_list = Movie.objects.filter(categories=category_id)
+            check_movies_rented_by_user()
+
+        categories = Categories.objects.all()
+        paginator = Paginator(movies_list, 3)
+        page = request.GET.get('page')
+        movies_list = paginator.get_page(page)
+        return render(request, 'movies.html', {
+            'mov': movies_list,
+            'cat': categories,
+            'rmb': rented_movies_binary
+        })
     else:
         if slug == "all":
             movies_list = Movie.objects.all()
@@ -120,12 +165,30 @@ def movie_list(request, slug):
             'cat': categories})
 
 def all_movies(request):
-    all_movies_list = Movie.objects.all()
-    paginator = Paginator(all_movies_list, 3)
+    current_user = request.user
+    rented_movies_binary = []
+    # check which movies are rented by current user
+    def check_movies_rented_by_user():
+        for m in movies_list:
+            rent_movie_list = Rent_Movie_Base.objects.filter(movie_slug=m, user_id=current_user.id)
+            if rent_movie_list.exists():
+                rented_movies_binary.append(1)
+            else:
+                rented_movies_binary.append(0)
+
+    movies_list = Movie.objects.all()
+
+    if current_user != None:
+        check_movies_rented_by_user()
+
+    paginator = Paginator(movies_list, 3)
+    movies_list = Movie.objects.all()
     page = request.GET.get('page')
     movies_list = paginator.get_page(page)
-    return render(request, 'all_movies.html', {
-        'mov': movies_list })
+    return render(request, 'movies.html', {
+        'mov': movies_list,
+        'rmb': rented_movies_binary
+    })
 
 @login_required()
 def rate_movie(request, slug):
@@ -149,14 +212,21 @@ def rate_movie_post(request, slug):
             return redirect('index')
 
 
-@login_required()
 def movie_detail(request, slug):
     try:
         movies_detail = Movie.objects.get(slug=slug)
+        if movies_detail.type == 'Series':
+            number_of_seasons = int(movies_detail.number_of_seasons)
+            episodes_per_season = movies_detail.episodes_per_season.split(',')
+            return render(request, 'movies_detail.html', {
+                'movies_detail': movies_detail,
+                'nos' : number_of_seasons,
+                'eps' : episodes_per_season
+            })
+        else:
+            return render(request, 'movies_detail.html', {'movies_detail': movies_detail})
     except Movie.DoesNotExist:
         raise Http404("Nie ma takiego filmu")
-    return render(request, 'movies_detail.html', {'movies_detail': movies_detail})
-    pass
 
 
 @login_required()
@@ -164,14 +234,15 @@ def rent_movie(request, slug):
     movie = get_object_or_404(Movie, slug=slug)
     rent_mov = Rent_Movie_Base.objects.filter(user_id=request.user, movie_slug=movie)
     if rent_mov.exists():
-        messages.error(request, "Juz wypozyczyles ten film")
+        messages.error(request, f"This {movie.type} already have been rented")
+        return redirect("all_movies")
     else:
         rmb_objc = Rent_Movie_Base.objects.create(user_id=request.user, movie_slug=movie)
         Rent_Status.objects.create(rent_movie=rmb_objc)
         number_of_copies = movie.numer_of_copies
         Movie.objects.filter(slug=slug).update(numer_of_copies= number_of_copies - 1)
-        messages.success(request, "Wypozyczono film")
-    return redirect("/movies")
+        messages.success(request, f"Rented {movie.type}:{movie.name}")
+        return redirect("all_movies")
 
 
 @login_required()
