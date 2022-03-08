@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 
 import copy
-from .forms import NewUserForm, Rate
+from .forms import NewUserForm, Rate, CaptchaTestForm
 from .models import Movie, Categories, Rating, Rent_Movie_Base, Rent_Status
 
 
@@ -45,21 +45,46 @@ def index(request):
         'cat': l
     })
 
+def captcha_test(request):
+    if request.POST:
+        form = CaptchaTestForm(request.POST)
+        if form.is_valid():
+            human = True
+    else:
+        form = CaptchaTestForm()
+    return render(request, 'captcha_test.html', {'form': form})
+
+
 
 def reg(request):
+    # iterate after form error object
+    def get_error_message(form_field):
+        if form_field in errors:
+            error_list_length = len(errors[form_field])
+            if error_list_length < 2:
+                x = errors[form_field][0]
+                for a in x:
+                    messages.error(request, a)
+            else:
+                for i in range(0, error_list_length):
+                    x = errors[form_field][i]
+                    for a in x:
+                        messages.error(request, a)
+
     if request.method == 'POST':
         form = NewUserForm(request.POST)
-        pass1 = form['password1'].value()
-        pass2 = form['password2'].value()
         if form.is_valid():
             user = form.save()
             messages.success(request, f"Created account: {user.username}")
             return redirect('login_request')
         else:
-            if pass1 == pass2:
-                messages.error(request, "This user already exists!")
-            else:
-                messages.error(request, "Passwords dont match!")
+            errors = form.errors.as_data()
+            username = 'username'
+            password = 'password2'
+            if username in errors:
+                get_error_message(username)
+            if password in errors:
+                get_error_message(password)
 
     form = NewUserForm
     return render(request, 'register.html', context={"form": form})

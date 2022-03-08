@@ -25,9 +25,9 @@
 
     </form>
 </div>
-<div class="container" style="margin-t;">
+<div class="container">
 
-    <div class="row">
+    <div class="row" style="margin-top: 30px;">
 
         {% load my_tags %}
         {% for movies in mov %}
@@ -132,14 +132,4 @@
 
     {% endif %}
 
-</div>
-<footer id="sticky-footer" class="py-4 bg-dark text-white-50" style="margin-top: 50px;">
-    <div class="container text-center">
-        <small>Copyright &copy; Daniel Partyka</small>
-    </div>
-</footer>
-</div>
-
-</body>
-
-</html>
+    {% include "footer.html" %}
