@@ -25,11 +25,15 @@ SECRET_KEY = 'django-insecure-c&h2arwx(j4f%@b8k6e+69!i!o8nzr#ae@l^87fw4^cax#hm5t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'your_email'
+EMAIL_HOST_PASSWORD = 'email_password'
+EMAIL_PORT = 587
+
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'dvd_rental.apps.DvdRentalConfig',
     'django_extensions',

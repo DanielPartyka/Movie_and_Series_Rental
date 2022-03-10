@@ -46,10 +46,10 @@ class NewUserForm(UserCreationForm):
         return user
 
 class MovieSearch(forms.Form):
-    movie_search = forms.CharField(label="Szukaj filmu",max_length=130)
+    movie_search = forms.CharField(label="Seach movie",max_length=130)
 
 class Rate(forms.Form):
-    rate_value = forms.IntegerField(label="Dodaj ocene filmu 1-10")
+    rate_value = forms.IntegerField(label="Add movie rate 1-5")
 
 class CaptchaTestForm(forms.Form):
     subject = forms.CharField(label="Subject", max_length=130, required=True, widget=forms.TextInput(

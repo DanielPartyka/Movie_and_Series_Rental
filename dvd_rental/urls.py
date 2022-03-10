@@ -5,6 +5,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', views.reg, name="register"),
+    path('activate/?P<uidb64>[0-9A-Za-z_\-]/?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20}/',
+        views.activate, name='activate'),
     path('login/', views.login_request, name="login_request"),
     path('logout/', views.logout_request, name='user_logout'),
     path('captcha_test/', views.captcha_test, name='captcha_test'),
