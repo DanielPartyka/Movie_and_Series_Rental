@@ -7,8 +7,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.core.mail import send_mail, EmailMessage
-from django.core.mail import EmailMultiAlternatives
-
 import copy
 
 from django.template.loader import render_to_string
@@ -52,6 +50,15 @@ def index(request):
     return render(request, 'index.html', context={
         'movie': obj,
         'cat': l
+    })
+
+def navigator_search(request):
+    query = request.GET.get('search')
+    get_categories = Categories.objects.filter(category_name__icontains=query)
+    get_movies = Movie.objects.filter(name__icontains=query)
+    return render(request, 'navigator_search.html', {
+        'cat' : get_categories,
+        'mov' : get_movies
     })
 
 def captcha_test(request):

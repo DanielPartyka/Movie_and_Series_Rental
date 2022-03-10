@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout/', views.logout_request, name='user_logout'),
     path('captcha_test/', views.captcha_test, name='captcha_test'),
     path('', views.index, name='index'),
+    path('search/', views.navigator_search, name='search'),
     path('movies/', views.all_movies, name='all_movies'),
     path('movies/<slug>', views.movie_list, name='movie_list'),
     path('movies_detail/<slug>/', views.movie_detail, name="movie_detail"),

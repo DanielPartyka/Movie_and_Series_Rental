@@ -106,7 +106,7 @@
             </ul>
             <!-- Left links -->
 
-            <form class="d-flex align-items-center w-100 form-search">
+            <form id="myform" class="d-flex align-items-center w-100 form-search" action="/search" method="GET">
                 <div class="input-group">
                     <button class="btn btn-light dropdown-toggle shadow-0" type="button" data-mdb-toggle="dropdown"
                             aria-expanded="false" style="padding-bottom: 0.4rem;">all
@@ -145,9 +145,9 @@
                                 search<i class="fas fa-chevron-right ps-2"></i></a>
                         </li>
                     </ul>
-                    <input type="search" class="form-control" placeholder="Search" aria-label="Search"/>
+                    <input class="form-control" placeholder="Search movie, categories etc" name="search" value="{{request.GET.search}}"/>
                 </div>
-                <a href="#!" class="text-white"><i class="fas fa-search ps-3"></i></a>
+                <a type="submit" onclick="document.getElementById('myform').submit()" class="text-white"><i class="fas fa-search ps-3"></i></a>
             </form>
 
             <ul class="navbar-nav ms-3">

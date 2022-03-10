@@ -51,6 +51,9 @@ class MovieSearch(forms.Form):
 class Rate(forms.Form):
     rate_value = forms.IntegerField(label="Add movie rate 1-5")
 
+class IndexSearch(forms.Form):
+    search = forms.CharField(label="Seach movie, categories etc:",max_length=130)
+
 class CaptchaTestForm(forms.Form):
     subject = forms.CharField(label="Subject", max_length=130, required=True, widget=forms.TextInput(
         attrs={
