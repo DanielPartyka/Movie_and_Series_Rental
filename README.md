@@ -6,4 +6,4 @@ full description will be updated soon
 - [x] make categories search
 - [x] count movies in categories
 - [x] (almost done) make fancy looking movie rating
-- [] fix mobile css and migrate contact form
+- [ ] fix mobile css and upload migrate form
