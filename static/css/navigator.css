@@ -1,0 +1,43 @@
+.fakeimg {
+    height: 200px;
+    background: #aaa;
+}
+ .jumbotron-image {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.footer {
+    display: block;
+}
+a {
+    text-decoration: none;
+}
+
+.navbar-dark .nav-item .nav-link {
+  color: #fff;
+}
+body {
+background-image: url(https://th.bing.com/th/id/R.d2edb29f3f970c36aadecbb01ed0bb79?rik=z%2bAuuobpN0KNSg&riu=http%3a%2f%2fisquad.tv%2fwp-content%2fuploads%2f2018%2f08%2fNetflix-Background.jpg&ehk=Ij4PSd%2bZkTcESSlAVWoGpNmExM0fu3BgteNT6AnS9lM%3d&risl=&pid=ImgRaw&r=0);
+height: 100%;
+overflow-x:hidden;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+}
+.navbar-dark .nav-item .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  border-radius: 0.25rem;
+  color: #fff;
+}
+.fa-li {
+  position: relative;
+  left: 0;
+}
+.myclass:hover .mclass{
+    display: none
+}
+.myclass:hover:before {
+    content: "Logout"
+}

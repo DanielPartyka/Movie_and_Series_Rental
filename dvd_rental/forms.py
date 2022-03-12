@@ -4,13 +4,13 @@ from django.contrib.auth.models import User
 from captcha.fields import CaptchaField
 
 class NewUserForm(UserCreationForm):
-    username = forms.CharField(label="Nazwa Użytkownika",max_length=130,required=True,widget=forms.TextInput(
+    username = forms.CharField(label="Username",max_length=130,required=True,widget=forms.TextInput(
         attrs={
             'class':'form-control',
             'size':'30',
         }
     ))
-    password1 = forms.CharField(label="Hasło",widget=forms.TextInput(
+    password1 = forms.CharField(label="Password",widget=forms.TextInput(
         attrs={
             'class': 'form-control',
             'size': '50',
@@ -18,7 +18,7 @@ class NewUserForm(UserCreationForm):
             'minlength' : '8',
         }
     ))
-    password2 = forms.CharField(label="Powtórz Hasło",widget=forms.TextInput(
+    password2 = forms.CharField(label="Repeat password",widget=forms.TextInput(
         attrs={
             'class': 'form-control',
             'size': '50',
@@ -52,7 +52,7 @@ class Rate(forms.Form):
     rate_value = forms.IntegerField(label="Add movie rate 1-5")
 
 class IndexSearch(forms.Form):
-    search = forms.CharField(label="Seach movie, categories etc:",max_length=130)
+    search = forms.CharField(label="Search movie, categories etc:",max_length=130)
 
 class CaptchaTestForm(forms.Form):
     subject = forms.CharField(label="Subject", max_length=130, required=True, widget=forms.TextInput(

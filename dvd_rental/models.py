@@ -14,6 +14,7 @@ class Name(models.CharField):
 
 class Categories(models.Model):
     category_id = models.AutoField(primary_key=True)
+    src = models.CharField(max_length=130, default='give_image_source')
     category_name = Name(max_length=130,blank=False)
     slug = AutoSlugField(populate_from='category_name')
 

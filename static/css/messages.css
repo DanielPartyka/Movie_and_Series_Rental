@@ -1,0 +1,44 @@
+.badge-light {
+    margin-top: 2.5em;
+}
+.errorlist {
+    list-style: none;
+    padding-left: 0px;
+    opacity: 0.8;
+    color: #dc3545;
+    font-size: 12px;
+}
+.msg {
+    margin: 0 !important;
+    margin-bottom: 4px !important;
+    margin-top: 4px !important;
+}
+.messages {
+    z-index: 100;
+    position: fixed;
+    right: 2em;
+    margin-top: -1em;
+    list-style: none;
+    text-align: right;
+}
+.alert {
+    margin-top: 1rem;
+}
+.alert-error {
+    background-color: #f2dede;
+    border-color: #ebcccc;
+    color: #a94442;
+}
+.alert {
+    positition: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0px);
+    transition: visibility 0s, opacity 250ms, transform 250ms;
+}
+.alert.hide {
+    positition: relative;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px); // translateX, translateY, translateZ works well
+    transition: visibility 0s 250ms, opacity 250ms, transform 250ms;

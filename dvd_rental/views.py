@@ -47,9 +47,14 @@ def index(request):
         it += 1
     l = list(movies_dict.keys())
     l.reverse()
+    image_src = []
+    for i in range (0, len(l)):
+        categories_obj = Categories.objects.get(category_name=l[i])
+        image_src.append(categories_obj.src)
     return render(request, 'index.html', context={
         'movie': obj,
-        'cat': l
+        'cat': l,
+        'imsrc' : image_src
     })
 
 def navigator_search(request):
@@ -165,7 +170,6 @@ def logout_request(request):
     return redirect('index')
     pass
 
-
 def movie_list(request, slug):
     current_user = request.user
     # check which movies are rented by current user
@@ -256,9 +260,11 @@ def all_movies(request):
     paginator = Paginator(movies_list, 3)
     movies_list = Movie.objects.all()
     page = request.GET.get('page')
+    categories = Categories.objects.all()
     movies_list = paginator.get_page(page)
     return render(request, 'movies.html', {
         'mov': movies_list,
+        'cat': categories,
         'rmb': rented_movies_binary
     })
 
@@ -333,14 +339,9 @@ def list_of_movies(request):
             rating_obj = Rating.objects.filter(movie_rate=get_movie_object)
             if rating_obj.exists():
                 get_rating_obj = Rating.objects.get(movie_rate=get_movie_object)
-                print(type(get_rating_obj.rate))
                 is_rated.append(get_rating_obj.rate)
             else: is_rated.append(0)
             list_of_rent_movies.append(Rent_Status.objects.filter(rent_movie=rmb[a]))
-
-        print(list_of_rent_movies)
-        for x in list_of_rent_movies:
-            print(x)
     except:
         return render(request, 'user_rent_movies.html', {
             'rs': ''
