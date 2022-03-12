@@ -107,7 +107,7 @@ class Rent_Status(models.Model):
 class Rating(models.Model):
     rating_id = models.AutoField(primary_key=True)
     user_rate = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    rate = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
+    rate = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])
     movie_rate = models.ForeignKey(Movie, on_delete=models.CASCADE)
 
     def __str__(self):

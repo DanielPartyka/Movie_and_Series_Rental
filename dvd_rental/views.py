@@ -6,7 +6,7 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate, get_user_model
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMessage
 import copy
 
 from django.template.loader import render_to_string
@@ -56,9 +56,11 @@ def navigator_search(request):
     query = request.GET.get('search')
     get_categories = Categories.objects.filter(category_name__icontains=query)
     get_movies = Movie.objects.filter(name__icontains=query)
+    matches_found = int(len(get_categories)) + int(len(get_movies))
     return render(request, 'navigator_search.html', {
         'cat' : get_categories,
-        'mov' : get_movies
+        'mov' : get_movies,
+        'mat' : matches_found
     })
 
 def captcha_test(request):
@@ -279,7 +281,8 @@ def rate_movie_post(request, slug):
             else:
                 rating = Rating.objects.create(user_rate=request.user, movie_rate=movie, rate=data)
                 rating.save()
-            return redirect('index')
+            messages.success(request,"Rating updated!")
+            return redirect('movies_rent_by_user')
 
 
 def movie_detail(request, slug):
@@ -311,7 +314,7 @@ def rent_movie(request, slug):
         Rent_Status.objects.create(rent_movie=rmb_objc)
         number_of_copies = movie.numer_of_copies
         Movie.objects.filter(slug=slug).update(numer_of_copies= number_of_copies - 1)
-        messages.success(request, f"Rented {movie.type}:{movie.name}")
+        messages.success(request, f"Rented {movie.type}: {movie.name}")
         return redirect("all_movies")
 
 
@@ -321,11 +324,23 @@ def list_of_movies(request):
         rmb = Rent_Movie_Base.objects.filter(user_id=request.user)
         list_of_rent_movies = []
         slugs = []
+        # Boolean values
+        is_rated = []
         for a in range(0, len(rmb)):
             rent_movie_base_filter = Rent_Movie_Base.objects.filter(user_id=request.user)[a]
             get_movie_object = Movie.objects.get(name=rent_movie_base_filter)
             slugs.append(get_movie_object.slug)
+            rating_obj = Rating.objects.filter(movie_rate=get_movie_object)
+            if rating_obj.exists():
+                get_rating_obj = Rating.objects.get(movie_rate=get_movie_object)
+                print(type(get_rating_obj.rate))
+                is_rated.append(get_rating_obj.rate)
+            else: is_rated.append(0)
             list_of_rent_movies.append(Rent_Status.objects.filter(rent_movie=rmb[a]))
+
+        print(list_of_rent_movies)
+        for x in list_of_rent_movies:
+            print(x)
     except:
         return render(request, 'user_rent_movies.html', {
             'rs': ''
@@ -333,7 +348,8 @@ def list_of_movies(request):
     else:
         return render(request, 'user_rent_movies.html', {
         'rs': list_of_rent_movies,
-        'slugs' : slugs
+        'slugs' : slugs,
+        'rate' : is_rated
     })
 
 def categories_search(request):
