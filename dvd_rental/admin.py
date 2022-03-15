@@ -3,7 +3,7 @@ import datetime
 from django.contrib import admin
 from django.shortcuts import get_object_or_404
 
-from .models import Movie, Categories, Rent_Movie_Base, Rating, Rent_Status
+from .models import Movie, Categories, Rent_Movie_Base, Rating, Rent_Status, Messages
 
 def change_status_Confirmed(modeladmin, request, queryset):
     queryset.update(rent_status = 'Confirmed')
@@ -48,13 +48,18 @@ def change_status_Returned(modeladmin, request, queryset):
 change_status_Rented.short_description = 'Change Status to rented'
 change_status_Returned.short_description = 'Change Status to returned'
 
+
 class Rent_StatusA(admin.ModelAdmin):
       actions = [change_status_Rented, change_status_Returned, change_status_Confirmed, change_status_Awaiting_to_pick_up]
+
+class MessagesAdmin(admin.ModelAdmin):
+    list_display = ('subject','text')
 
 admin.site.register(Movie)
 admin.site.register(Categories)
 admin.site.register(Rent_Movie_Base)
 admin.site.register(Rating)
 admin.site.register(Rent_Status, Rent_StatusA)
+admin.site.register(Messages, MessagesAdmin)
 
 

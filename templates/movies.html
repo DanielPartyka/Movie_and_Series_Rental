@@ -1,5 +1,6 @@
 {% include "navigator.html" %}
 {% include "messages.html" %}
+<link href="../static/css/movies.css" rel="stylesheet">
 <div class="row">
     <ol class="breadcrumb justify-content-center" style="font-size: 23px; color:black;">
         {% for c in cat %}
@@ -10,15 +11,15 @@
         </li>
     </ol>
 </div>
-<div class="container" style="margin-bottom: 15px; height: 640px;">
+<div class="container" style="margin-bottom: 15px;">
     <form action="/movies/search" method="GET" style="margin-top: -10px;">
 
         <div class="row">
-            <div class="col-11">
+            <div class="col">
                 <input class="form-control" name="movie_search" value="{{request.GET.movie_search}}" type="text"
-                       placeholder="Write movie name" aria-label="Search">
+                       placeholder="Search movies/series" aria-label="Search">
             </div>
-            <div class="col-1">
+            <div class="col">
                 <button class="btn btn-success float-right" type="submit">Search</button>
             </div>
         </div>
@@ -37,22 +38,22 @@
                      alt="Card image" style="width:auto; height:350px;">
                 <div class="card-body">
                     <h4 class="card-title">{{movies.name}}</h4>
-                    <p class="card-text">Type: {{movies.type}}</p>
-                    <p class="card-text">Liczba kopii: {{movies.numer_of_copies}}</p>
+                    <p class="card-text"><b>Type:</b> {{movies.type}}</p>
+                    <p class="card-text"><b>Number of copies:</b> {{movies.numer_of_copies}}</p>
                     {% if movies.get_avg_rating == 0 %}
                     <h6>No one rated this movie yet
                     </h6>
                     {% else %}
-                    <h6>Oceny użytkowników portalu DVDRENTAL: {{movies.get_avg_rating}}/5.0
+                    <h6>User rates: {{movies.get_avg_rating}}/5.0
                         ({{ movies.rating_count }}
                         {% if movies.rating_count == 1 %}
-                        głosujący)
+                        rating)
                         {% else %}
-                        głosujących)
+                        ratings)
+                        </h6>
                         {% endif %}
-                    </h6>
                     {% endif %}
-                    <p class="card-text">Dodano: {{movies.pub_date}}</p>
+                    <p class="card-text"><b>Added:</b> {{movies.pub_date}}</p>
                     <a href="/movies_detail/{{movies.slug}}" class="btn btn-primary float-left">Details</a>
                     {% with rmb|list_item:forloop.counter0 as rmb %}
                     {% if movies.numer_of_copies > 0 and rmb == 0 %}

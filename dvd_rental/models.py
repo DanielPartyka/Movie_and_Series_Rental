@@ -114,5 +114,14 @@ class Rating(models.Model):
     def __str__(self):
         return self.movie_rate.name + ': ' + str(self.rate)
 
+class Messages(models.Model):
+    message_id = models.AutoField(primary_key = True)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=130)
+    text = models.CharField(max_length=400)
+
+    def __str__(self):
+        return self.subject
+
 
 

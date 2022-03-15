@@ -14,7 +14,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from .forms import NewUserForm, Rate, CaptchaTestForm
-from .models import Movie, Categories, Rating, Rent_Movie_Base, Rent_Status
+from .models import Movie, Categories, Rating, Rent_Movie_Base, Rent_Status, Messages
 from .token import account_activation_token
 
 
@@ -68,14 +68,21 @@ def navigator_search(request):
         'mat' : matches_found
     })
 
-def captcha_test(request):
+@login_required()
+def send_message(request):
     if request.POST:
         form = CaptchaTestForm(request.POST)
         if form.is_valid():
+            subject = form.cleaned_data.get('subject')
+            text = form.cleaned_data.get('text')
             human = True
+            m = Messages(user_id=request.user, subject=subject, text=text)
+            m.save()
+            messages.success(request, "Message has been sent")
+            form = CaptchaTestForm()
     else:
         form = CaptchaTestForm()
-    return render(request, 'captcha_test.html', {'form': form})
+    return render(request, 'contact.html', {'form': form})
 
 def reg(request):
     # iterate after form error object
