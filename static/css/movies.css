@@ -1,4 +1,4 @@
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: 768px) {
   .card-deck {
     display: inline-flex;
 
@@ -6,14 +6,18 @@
   .form-control {
     width: 1095px;
   }
+  .card {
+        width:350px;
+    }
 }
-@media only screen and (max-width: 600px) {
-  .col-sm-4 {
-    padding: 15px;
-    display: flex;
-    margin-left: 50px;
-  }
+@media only screen and (max-width: 767px) {
   .form-control {
-    width: 345px;
+    width: 200px;
   }
+  .col-sm-4 {
+    margin-top: 20px;
+  }
+  .card {
+        width:280px;
+    }
  }
