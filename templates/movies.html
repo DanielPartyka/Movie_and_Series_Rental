@@ -1,39 +1,39 @@
 {% include "navigator.html" %}
 {% include "messages.html" %}
 <link href="../static/css/movies.css" rel="stylesheet">
-<div class="row">
-    <ol class="breadcrumb justify-content-center" style="font-size: 23px; color:black;">
-        {% for c in cat %}
-        <li class="breadcrumb-item"><a href="/movies/{{c.category_name}}" style="color: white;">{{c.category_name}}</a>
-        </li>
-        {% endfor %}
-        <li class="breadcrumb-item"><a href="/movies/all" style="color: white;">all</a>
-        </li>
-    </ol>
-</div>
-<div class="container" style="margin-bottom: 15px;">
-    <form action="/movies/search" method="GET" style="margin-top: -10px;">
-
-        <div class="row">
-            <div class="col">
-                <input class="form-control" name="movie_search" value="{{request.GET.movie_search}}" type="text"
-                       placeholder="Search movies/series" aria-label="Search">
-            </div>
-            <div class="col">
-                <button class="btn btn-success float-right" type="submit">Search</button>
-            </div>
-        </div>
-
-    </form>
-</div>
 <div class="container">
+    <div class="row">
+        <ol class="breadcrumb justify-content-center" style="font-size: 23px; color:black;">
+            {% for c in cat %}
+            <li class="breadcrumb-item"><a href="/movies/{{c.category_name}}"
+                                           style="color: white;">{{c.category_name}}</a>
+            </li>
+            {% endfor %}
+            <li class="breadcrumb-item"><a href="/movies/all" style="color: white;">all</a>
+            </li>
+        </ol>
+    </div>
+    <div class="row" style="margin-bottom: 15px;">
+        <form action="/movies/search" method="GET" style="margin-top: -10px;">
 
-    <div class="row" style="margin-top: 30px;">
+            <div class="row">
+                <div class="col">
+                    <input class="form-control" name="movie_search" value="{{request.GET.movie_search}}" type="text"
+                           placeholder="Search movies/series" aria-label="Search">
+                </div>
+                <div class="col">
+                    <button class="btn btn-success float-right" type="submit">Search</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="row">
 
         {% load my_tags %}
         {% for movies in mov %}
         <div class="col-sm-4">
-            <div class="card" style="width:350px;">
+            <div class="card">
                 <img src="{{movies.src}}" class="card-img-top img-fluid"
                      alt="Card image" style="width:auto; height:350px;">
                 <div class="card-body">
@@ -50,8 +50,8 @@
                         rating)
                         {% else %}
                         ratings)
-                        </h6>
-                        {% endif %}
+                    </h6>
+                    {% endif %}
                     {% endif %}
                     <p class="card-text"><b>Added:</b> {{movies.pub_date}}</p>
                     <a href="/movies_detail/{{movies.slug}}" class="btn btn-primary float-left">Details</a>
@@ -96,41 +96,49 @@
                 </div>
             </div>
         </div>
-        {% empty %}
-        <div class="empty">
-            <div class="container">
-                <div>
-                    <h1>Brak filmow</h1>
-                </div>
+    </div>
+    {% empty %}
+    <div class="empty">
+        <div class="container">
+            <div>
+                <h1>Brak filmow</h1>
             </div>
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
     <div class="row">
     </div>
     {% if mov.has_other_pages %}
-    <div style="height: 130px;">
-        <ul class="pagination justify-content-center" style="margin-top: 30px;">{% if mov.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page={{ mov.previous_page_number }}">&laquo;</a></li>
-            {% else %}
-            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-            {% endif %}
-            {% for i in mov.paginator.page_range %}
-            {% if mov.number == i %}
-            <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
-            </li>
-            {% else %}
-            <li class="page-item"><a class="page-link" href="?page={{ i }}" style="background-color: white;">{{ i }} </a>
-            </li>
-            {% endif %}
-            {% endfor %}
-            {% if mov.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ mov.next_page_number }}"
-                                     style="background-color: white;">&raquo;</a></li>
-            {% else %}
-            <li class="page-item disabled"><span class="page-link" style="background-color: white;">&raquo;</span></li>
-            {% endif %}
-        </ul>
+    <div class="row">
+        <div style="height: 130px;">
+            <ul class="pagination justify-content-center" style="margin-top: 30px;">{% if mov.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ mov.previous_page_number }}">&laquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                {% endif %}
+                {% for i in mov.paginator.page_range %}
+                {% if mov.number == i %}
+                <li class="page-item active"><span class="page-link">{{ i }} <span
+                        class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}" style="background-color: white;">{{
+                    i
+                    }} </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% if mov.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ mov.next_page_number }}"
+                                         style="background-color: white;">&raquo;</a></li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link"
+                                                     style="background-color: white;">&raquo;</span>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 
     {% else %}
