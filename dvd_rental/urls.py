@@ -21,3 +21,5 @@ urlpatterns = [
     path('user_rent_movies/rate_movie/<slug>/rate/', views.rate_movie_post, name="rate_movie_post"),
     path('categories/', views.categories_search, name="categories_search")
 ]
+
+handler404 = 'dvd_rental.views.custom_error_404'
