@@ -1,13 +1,12 @@
 @media only screen and (min-width: 768px) {
-  .card-deck {
-    display: inline-flex;
-
-  }
   .form-control {
     width: 1095px;
   }
   .card {
         width:350px;
+    }
+    .col-sm-4 {
+        margin-top: 0px;
     }
 }
 @media only screen and (max-width: 767px) {
