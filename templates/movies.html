@@ -29,7 +29,6 @@
         </form>
     </div>
     <div class="row">
-
         {% load my_tags %}
         {% for movies in mov %}
         <div class="col-sm-4">
@@ -96,54 +95,53 @@
                 </div>
             </div>
         </div>
-    </div>
-    {% empty %}
-    <div class="empty">
-        <div class="container">
-            <div>
-                <h1>Brak filmow</h1>
+        {% empty %}
+        <div class="empty">
+            <div class="container">
+                <div>
+                    <h1>Brak filmow</h1>
+                </div>
             </div>
         </div>
-    </div>
-    {% endfor %}
-    <div class="row">
-    </div>
-    {% if mov.has_other_pages %}
-    <div class="row">
-        <div style="height: 130px;">
-            <ul class="pagination justify-content-center" style="margin-top: 30px;">{% if mov.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ mov.previous_page_number }}">&laquo;</a>
-                </li>
-                {% else %}
-                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-                {% endif %}
-                {% for i in mov.paginator.page_range %}
-                {% if mov.number == i %}
-                <li class="page-item active"><span class="page-link">{{ i }} <span
-                        class="sr-only">(current)</span></span>
-                </li>
-                {% else %}
-                <li class="page-item"><a class="page-link" href="?page={{ i }}" style="background-color: white;">{{
-                    i
-                    }} </a>
-                </li>
-                {% endif %}
-                {% endfor %}
-                {% if mov.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ mov.next_page_number }}"
-                                         style="background-color: white;">&raquo;</a></li>
-                {% else %}
-                <li class="page-item disabled"><span class="page-link"
-                                                     style="background-color: white;">&raquo;</span>
-                </li>
-                {% endif %}
-            </ul>
+        {% endfor %}
+        <div class="row">
         </div>
-    </div>
+        {% if mov.has_other_pages %}
+        <div class="row">
+            <div style="height: 130px;">
+                <ul class="pagination justify-content-center" style="margin-top: 30px;">{% if mov.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ mov.previous_page_number }}">&laquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                    {% endif %}
+                    {% for i in mov.paginator.page_range %}
+                    {% if mov.number == i %}
+                    <li class="page-item active"><span class="page-link">{{ i }} <span
+                            class="sr-only">(current)</span></span>
+                    </li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}" style="background-color: white;">{{
+                        i
+                        }} </a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if mov.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ mov.next_page_number }}"
+                                             style="background-color: white;">&raquo;</a></li>
+                    {% else %}
+                    <li class="page-item disabled"><span class="page-link"
+                                                         style="background-color: white;">&raquo;</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
 
-    {% else %}
-    <div style="height: 100px;">
+        {% else %}
+        <div style="height: 100px;">
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
-{% include "footer.html" %}
+    {% include "footer.html" %}
