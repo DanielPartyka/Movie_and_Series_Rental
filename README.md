@@ -36,7 +36,7 @@ python manage.py createsuperuser
 ```
 python manage.py runserver
 ```
-#### Important
+#### !Important
 ##### In order to activate a user account you need to set the smtp (e.g. gmail smtp)
 https://github.com/DanielPartyka/Movie_and_Series_Rental/blob/2f7ece1f7a0d0d085d09bda170309a71375559ed/dvd/settings.py#L28-L32
 
