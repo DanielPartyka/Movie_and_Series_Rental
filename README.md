@@ -10,7 +10,7 @@
 
 ### Functionalities:
 * registration/login (email confirmation)
-* simulation of reservation store via wesbite (reservation->confirmation->rental->return)
+* simulation of reservation store via website (reservation->confirmation->rental->return)
 * filtrating movies and series by name and their categories
 * rating in scale (0-5) movie/series
 * contact form (secured by captcha)
