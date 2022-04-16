@@ -1,9 +1,12 @@
 # Movie_and_Series_Rental
-#### Basic website created with Django and Bootstrap4.
-
+#### Website created with Django and MdBootstrap.
 ![alt text](dvd_rental.png) 
-### photo
-#### demo: https://dvdrentaldanielpartyka.herokuapp.com/
+### demo: https://dvdrentaldanielpartyka.herokuapp.com/
+
+### Technologies:
+* Python 3.9.7
+* Django 4.0.2
+* MdBootstrap 3.10.2
 
 ### Functionalities:
 * registration/login (email confirmation)
@@ -14,8 +17,7 @@
 
 ### Instalation guide:
 ### required python version 3.8+
-
-## Instalation:
+### Installing dependencies
 ```
 python -m venv venv 
 venv\Scripts\activate
@@ -35,6 +37,8 @@ python manage.py createsuperuser
 ```
 python manage.py runserver
 ```
+### Important
+
 
 
 
