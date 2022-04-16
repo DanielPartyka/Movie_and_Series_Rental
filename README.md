@@ -1,7 +1,7 @@
 # Movie_and_Series_Rental
 #### Basic website created with Django and Bootstrap4.
 
-# Image
+![alt text](dvd_rental.png) 
 ### photo
 #### demo: https://dvdrentaldanielpartyka.herokuapp.com/
 
