@@ -14,8 +14,7 @@
 * filtrating movies and series by name and their categories
 * rating in scale (0-5) movie/series
 * contact form (secured by captcha)
-
-### Instalation guide:
+## Instalation guide:
 ### required python version 3.8+
 ### Installing dependencies
 ```
