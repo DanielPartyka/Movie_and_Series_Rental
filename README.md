@@ -1,11 +1,12 @@
 # Movie_and_Series_Rental
 #### Website created with Django and MdBootstrap.
 ![alt text](dvd_rental.png) 
+### Warning - Due to google less secure applications politcs its recommended
+### to use this test account login: testuser password: dvdrental123
 ### demo: https://dvdrentaldanielpartyka.herokuapp.com/
-
 ### Technologies:
 * Python 3.9.7
-* Django 4.0.2
+* Django 4.0.4
 * MdBootstrap 3.10.2
 
 ### Functionalities:
