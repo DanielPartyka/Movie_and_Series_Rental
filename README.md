@@ -1,7 +1,8 @@
 # Movie_and_Series_Rental
 #### Website created with Django and MdBootstrap.
 ![alt text](dvd_rental.png) 
-##### Warning - Due to google less secure applications politcs its recommended to use this test account login: testuser password: dvdrental123
+#### (Edit 21.05.2022) Due to google less secure applications politcs its recommended to use this test account login: testuser password: dvdrental123
+
 ### demo: https://dvdrentaldanielpartyka.herokuapp.com/
 ### Technologies:
 * Python 3.9.7
