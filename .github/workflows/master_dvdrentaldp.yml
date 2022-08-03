@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'dvdrentaldp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EE5C13A7DD0B496FA295875BD4B7526C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B94324D00C92403C87D5866EE1E78B6A }}
