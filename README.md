@@ -3,7 +3,6 @@
 ![alt text](dvd_rental.png) 
 #### (Edit 21.05.2022) Due to google less secure applications politcs its recommended to use this test account login: testuser password: dvdrental123
 
-### demo: https://dvdrentaldanielpartyka.herokuapp.com/
 ### Technologies:
 * Python 3.9.7
 * Django 4.0.4
